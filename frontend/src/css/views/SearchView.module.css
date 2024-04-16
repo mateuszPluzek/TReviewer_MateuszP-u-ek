@@ -1,0 +1,51 @@
+.searchView {
+    /*width: 100vw;*/
+    /*height: 35%;*/
+}
+
+.searchFormDiv {
+    width: 100%;
+    /*height: 35%;*/
+    padding: 0.5em;
+    background-color: #4388EE;
+}
+
+
+.buttonDiv {
+    display: flex;
+    justify-content: center;
+    padding-top: 5em;
+}
+
+.selectButton {
+    width: 8em;
+    height: 8em;
+    text-align: center;
+    background-color: #E3E3E3;
+    border-radius: 0;
+
+    box-shadow: 2px 2px 4px #3d3d3d;
+}
+
+.selectButton:active {
+    background-color: #b0b0b0;
+}
+
+.selectButton:hover {
+    background-color: #d0cfcf;
+}
+
+.activeButton {
+    width: 8em;
+    height: 8em;
+    text-align: center;
+    background-color: #6e6e6e;
+    border-radius: 0;
+
+    box-shadow: 2px 2px 4px #3d3d3d;
+}
+
+.logoImage {
+    height: 6em;
+    width: 6em;
+}
