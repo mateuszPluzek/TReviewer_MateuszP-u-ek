@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styles from '../css/SearchForm.module.css'
 
 function SearchPlanes() {
+    // TODO fetch correct airports
     //airport
     const [airport, setAirport] = useState('');
     const [airportOptions, setAirportOptions] = useState([]);
@@ -38,7 +39,7 @@ function SearchPlanes() {
                    name='airportName'
                    value={airport}
                    onChange={(e)=>setAirport(e.target.value)}
-                   placeholder='Select Airport'>
+                   placeholder='Select airport'>
             </input>
             <hr className={styles.breakLine}></hr>
             <input list='startRoutes' className={styles.selectStation}
@@ -46,7 +47,7 @@ function SearchPlanes() {
                    name='startRoute'
                    value={startRoute}
                    onChange={(e)=>setStartRoute(e.target.value)}
-                   placeholder='Select start'>
+                   placeholder='Select starting airport'>
             </input>
 
             <input list='endRoutes' className={styles.selectStation}

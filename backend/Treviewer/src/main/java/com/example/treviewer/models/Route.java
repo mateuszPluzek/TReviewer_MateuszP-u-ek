@@ -15,7 +15,7 @@ public class Route {
     private Station station;
 
     @ManyToOne
-    @JoinColumn(name = "id_station")
+    @JoinColumn(name = "id_destination")
     private Station destination;
 
     @ManyToOne

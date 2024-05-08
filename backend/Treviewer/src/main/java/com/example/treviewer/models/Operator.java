@@ -2,6 +2,8 @@ package com.example.treviewer.models;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "operators")
 public class Operator {
@@ -33,5 +35,28 @@ public class Operator {
 
     public void setOperator(String operator) {
         this.operator = operator;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) {
+            return true;
+        }
+        if(!(o instanceof Operator)) {
+            return false;
+        }
+        Operator operator = (Operator) o;
+        return Objects.equals(this.idOperator, operator.idOperator)
+                && Objects.equals(this.operator, operator.operator);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.idOperator, this.operator);
+    }
+
+    @Override
+    public String toString() {
+        return "Id: {" + this.idOperator + "}, Operator name: {" + this.operator + "}";
     }
 }

@@ -4,12 +4,21 @@ import SearchPlanes from "../SearchPlanes";
 import styles from '../../css/views/SearchView.module.css';
 function SearchView() {
     const [buttonPressed, setButtonPressed] = useState(1);
-    // TODO buttons change color based on wich one is clicked
+    //button color logic
+    const [trainButtonStyle, setTrainButtonStyle] = useState(styles.selectButton);
+    const [planeButtonStyle, setPlaneButtonStyle] = useState(styles.selectButton);
+
+    // TODO add log out button
+    // TODO change between found station and search view
     const handleTrainButton = () => {
         setButtonPressed(1);
+        setPlaneButtonStyle(styles.selectButton);
+        setTrainButtonStyle(styles.activeButton);
     }
     const handlePlaneButton = () => {
         setButtonPressed(2);
+        setPlaneButtonStyle(styles.activeButton);
+        setTrainButtonStyle(styles.selectButton);
     }
 
     return (
@@ -27,10 +36,10 @@ function SearchView() {
               }
           </div>
           <div className={styles.buttonDiv}>
-              <button className={styles.selectButton} onClick={handleTrainButton}>
+              <button className={trainButtonStyle} onClick={handleTrainButton}>
                   <img className={styles.logoImage} src={require('../../img/train_ico.png')}/>
               </button>
-              <button className={styles.selectButton} onClick={handlePlaneButton}>
+              <button className={planeButtonStyle} onClick={handlePlaneButton}>
                   <img className={styles.logoImage} src={require('../../img/plane_ico.png')}/>
               </button>
           </div>

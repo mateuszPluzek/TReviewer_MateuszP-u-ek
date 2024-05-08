@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styles from '../css/SearchForm.module.css'
 
 function SearchTrains() {
-
+    // TODO fetch correct stations
     //station
     const [station, setStation] = useState('');
     const [stationOptions, setStationOptions] = useState([]);
@@ -39,7 +39,7 @@ function SearchTrains() {
                 name='stationName'
                 value={station}
                 onChange={(e)=>setStation(e.target.value)}
-                placeholder='Select Station'>
+                placeholder='Select train station'>
             </input>
             <hr className={styles.breakLine}></hr>
             <input list='startRoutes' className={styles.selectStation}
@@ -47,7 +47,7 @@ function SearchTrains() {
                    name='startRoute'
                    value={startRoute}
                    onChange={(e)=>setStartRoute(e.target.value)}
-                   placeholder='Select start'>
+                   placeholder='Select starting train station'>
             </input>
 
             <input list='endRoutes' className={styles.selectStation}

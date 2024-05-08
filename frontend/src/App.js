@@ -7,6 +7,8 @@ import Login from "./components/views/Login";
 import Test from "./components/views/Test";
 import Register from "./components/views/Register";
 import SearchView from "./components/views/SearchView";
+import Posts from "./components/views/Posts";
+
 import styles from "./App.module.css"
 
 // routing
@@ -22,6 +24,7 @@ function App() {
             <Route path = '/test' element = {<Test/>}/>
             <Route path = '/register' element = {<Register/>}/>
             <Route path = '/search' element = {<SearchView/>}/>
+            <Route path = '/posts' element = {<Posts/>}/>
           </Routes>
         </div>
       </>
