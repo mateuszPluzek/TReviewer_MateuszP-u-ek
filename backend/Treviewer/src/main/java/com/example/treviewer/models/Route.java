@@ -2,6 +2,8 @@ package com.example.treviewer.models;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name="routes")
 public class Route {
@@ -84,5 +86,30 @@ public class Route {
 
     public void setRouteType(Integer routeType) {
         this.routeType = routeType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o)
+            return true;
+        if(!(o instanceof Route))
+            return false;
+        Route route = (Route) o;
+        return Objects.equals(this.idRoute, route.idRoute)
+                && Objects.equals(this.station, route.station)
+                && Objects.equals(this.destination, route.destination)
+                && Objects.equals(this.operator, route.operator)
+                && Objects.equals(this.routeName, route.routeName)
+                && Objects.equals(this.routeType, route.routeType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.idRoute, this.station, this.destination, this.operator, this.routeName, this.routeType);
+    }
+
+    @Override
+    public String toString() {
+        return "Id: {" + this.idRoute + "} Route name: {" + this.routeName + "} Route type: {" + this.routeType + "}";
     }
 }
