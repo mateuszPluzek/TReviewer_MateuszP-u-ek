@@ -1,16 +1,23 @@
 package com.example.treviewer.models;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id_user")
     private Integer idUser;
+
+    @Column(name = "email")
+    private String email;
 
     @Column(name="username")
     private String username;
@@ -19,7 +26,7 @@ public class User {
     private String password;
 
     @Column(name="user_type")
-    private Integer userType;
+    private String userType;
 
     @ManyToMany
     @JoinTable(
@@ -33,10 +40,11 @@ public class User {
 
     }
 
-    public User(String username, String password, Integer userType) {
+    public User(String username, String password, String userType, String email) {
         this.username = username;
         this.password = password;
         this.userType = userType;
+        this.email = email;
     }
 
     public Integer getIdUser() {
@@ -51,7 +59,7 @@ public class User {
         return password;
     }
 
-    public Integer getUserType() {
+    public String getUserType() {
         return userType;
     }
 
@@ -67,7 +75,36 @@ public class User {
         this.password = password;
     }
 
-    public void setUserType(Integer userType) {
+    public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return  List.of();
+    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
