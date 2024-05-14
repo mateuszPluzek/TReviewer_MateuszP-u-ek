@@ -1,26 +1,45 @@
 import React, {useEffect, useState} from 'react';
+import axios from "axios";
 import styles from '../css/SearchForm.module.css'
 
 function SearchTrains() {
-    // TODO fetch correct stations
+    // train stations options
+    const [trainStations, setTrainStations] = useState([])
+
     //station
     const [station, setStation] = useState('');
-    const [stationOptions, setStationOptions] = useState([]);
-    const testStations = ['test1', 'test2', 'test3'];
     //start-route
     const [startRoute, setStartRoute] = useState('');
-    const [startOptions, setStartOptions] = useState([]);
-    const testStart = ['test1', 'test2', 'test3'];
     //end-route
     const [endRoute, setEndRoute] = useState('');
-    const [endOptions, setEndOptions] = useState([]);
-    const testEnd = ['test1', 'test2', 'test3'];
+
 
     useEffect(() => {
-        setStationOptions(testStations);
-        setStartOptions(testStart);
-        setEndOptions(testEnd);
-    }, []);
+        const token = localStorage.getItem('token');
+        fetchData(token);
+    });
+
+    const fetchData = async(token) => {
+        try {
+            const response = await axios.get("http://localhost:8080/stations",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+            const filteredStations = response.data.filter(station => station.stationType === 0);
+
+            setTrainStations(filteredStations);
+
+        } catch(error) {
+            console.error("error fetching data", error);
+        }
+    }
+
+    const dataList = trainStations.map(station =>
+        <option value={station.idStation}>{station.stationName}</option>
+    );
+
 
     const submitHandler = async (event) => {
         event.preventDefault();
@@ -34,7 +53,7 @@ function SearchTrains() {
 
     return (
         <form className={styles.searchForm} onSubmit={submitHandler} autoComplete='off'>
-            <input list='trainsStations' className={styles.selectStation}
+            <input list='trainStations' className={styles.selectStation}
                 type='text'
                 name='stationName'
                 value={station}
@@ -42,7 +61,7 @@ function SearchTrains() {
                 placeholder='Select train station'>
             </input>
             <hr className={styles.breakLine}></hr>
-            <input list='startRoutes' className={styles.selectStation}
+            <input list='trainStations' className={styles.selectStation}
                    type='text'
                    name='startRoute'
                    value={startRoute}
@@ -50,7 +69,7 @@ function SearchTrains() {
                    placeholder='Select starting train station'>
             </input>
 
-            <input list='endRoutes' className={styles.selectStation}
+            <input list='trainStations' className={styles.selectStation}
                    type='text'
                    name='endRoute'
                    value={endRoute}
@@ -60,23 +79,10 @@ function SearchTrains() {
 
             <button className={styles.searchButton} type='submit'>Search</button>
 
-            <datalist id='trainsStations'>
-                {stationOptions.map((option, index) => (
-                    <option value={option}>{option}</option>
-                ))}
+            <datalist id='trainStations'>
+                {dataList}
             </datalist>
 
-            <datalist id='startRoutes'>
-                {startOptions.map((option, index) => (
-                    <option value={option}>{option}</option>
-                ))}
-            </datalist>
-
-            <datalist id='endRoutes'>
-                {endOptions.map((option, index) => (
-                    <option value={option}>{option}</option>
-                ))}
-            </datalist>
         </form>
     );
 

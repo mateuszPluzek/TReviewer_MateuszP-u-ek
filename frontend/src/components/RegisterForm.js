@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import styles from '../css/RegisterForm.module.css'
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function RegisterForm() {
 
@@ -7,7 +9,11 @@ function RegisterForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const navigate = useNavigate();
 
+    // TODO validate credentials
+    // TODO wrong credentials show where the error is
+    // TODO confrimation of signup or error handling
 
     function isValidEmail() {
         if (email.match(/.+@+./i))
@@ -23,17 +29,37 @@ function RegisterForm() {
             return false;
     }
 
+    function isPasswordStrongEnough() {
+        return true;
+    }
+
     const submitHandler = async (event) => {
         event.preventDefault();
-        if(!isValidEmail(email))
+        if(!isValidEmail(email)) {
             alert('Wrong email!');
-        if(!arePasswordTheSame(password, repeatPassword))
+            return;
+        }
+        if(!isPasswordStrongEnough()) {
+            alert('Passwords is too weak');
+            return;
+        }
+        if(!arePasswordTheSame()) {
             alert('Passwords are different');
-
-        console.log('username: ', password);
-        console.log('email: ', password);
-        console.log('Password: ', password);
-        console.log('Password again: ', repeatPassword);
+            return;
+        }
+        try {
+            const response = await axios.post("http://localhost:8080/auth/signup",
+                {
+                    email,
+                    password,
+                    username
+                });
+            navigate("/login");
+        }catch(error) {
+            if(error) {
+                console.error("registration failed", error);
+            }
+        }
     }
 
     return (
