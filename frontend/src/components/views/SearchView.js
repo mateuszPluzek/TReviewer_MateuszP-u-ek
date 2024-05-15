@@ -11,9 +11,8 @@ function SearchView() {
     const [planeButtonStyle, setPlaneButtonStyle] = useState(styles.selectButton);
     const navigate = useNavigate();
 
-    // TODO add log out button
     // TODO change between found station and search view
-    // TODO redirect to login if no token found (like in Login.js)
+    // TODO fix the css
     useEffect(() => {
         if(buttonPressed !== 2) {
             handleTrainButton();
@@ -55,7 +54,7 @@ function SearchView() {
               }
               <div className={styles.logOutDiv}>
                   <button className={styles.logOutButton} onClick={handleLogout}>
-                      LOG OUT
+                      Log out
                   </button>
               </div>
           </div>
