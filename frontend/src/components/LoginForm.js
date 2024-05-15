@@ -5,12 +5,21 @@ import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
 
-    // TODO if credentials are incorrect show red text and outlines
-    // TODO otherwise show red text that login wasn't succesful
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [credentialsError, setCredentialsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+
+    const [signupMessage, setSignupMessage] = useState('');
+
+    useEffect(() => {
+       const registerMessage = localStorage.getItem('register');
+       if(registerMessage !== null) {
+           setSignupMessage(registerMessage);
+           localStorage.removeItem('register');
+       }
+    });
 
     const submitHandler = async (event) => {
         event.preventDefault();
@@ -26,16 +35,20 @@ function LoginForm() {
             navigate("/search");
 
         } catch(error) {
-            if(error.response && error.response.status === 403)
-                alert("Incorrect credentials!");
+            if(error.response && error.response.status === 403) {
+                setErrorMessage('Incorrect username or password');
+                setCredentialsError(true);
+            }
             else
-                console.error("Login failed", error);
+                setErrorMessage('Login error, try later');
         }
     }
 
     return (
         <form className={styles.loginForm} onSubmit={submitHandler}>
-            <input className={styles.textInputLogin}
+            {(signupMessage !== '') && <b>{signupMessage}</b>}
+            {(errorMessage !== '') && <p className={styles.errorMessage}>{errorMessage}</p>}
+            <input className={`${styles.textInputLogin} ${credentialsError ? styles.error : ''}`}
                 type = 'text'
                 name = "username"
                 value = {username}
@@ -43,7 +56,7 @@ function LoginForm() {
                 placeholder = 'username'>
             </input>
 
-            <input className={styles.textInputLogin}
+            <input className={`${styles.textInputLogin} ${credentialsError ? styles.error : ''}`}
                    type = 'password'
                    name = "password"
                    value = {password}

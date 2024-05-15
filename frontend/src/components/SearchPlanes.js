@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styles from '../css/SearchForm.module.css'
 
 function SearchPlanes() {
-    // TODO fetch correct airports
+    // TODO copy the searchTrains so it work for the planes
     //airport
     const [airport, setAirport] = useState('');
     const [airportOptions, setAirportOptions] = useState([]);

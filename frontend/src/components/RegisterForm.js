@@ -11,12 +11,19 @@ function RegisterForm() {
     const [repeatPassword, setRepeatPassword] = useState('');
     const navigate = useNavigate();
 
-    // TODO validate credentials
-    // TODO wrong credentials show where the error is
-    // TODO confrimation of signup or error handling
+    // Errors
+    const [errorMessageEmail, setErrorMessageEmail] = useState('');
+    const [errorMessagePassword, setErrorMessagePassword] = useState('');
+    const [errorMessageRepeat, setErrorMessageRepeat] = useState('');
+
+    const [errorEmail, setErrorEmail] = useState(false);
+    const [errorPassword, setErrorPassword] = useState(false);
+    const [errorRepeat, setErrorRepeat] = useState(false);
+
+    const [errorMessage, setErrorMessage] = useState('');
 
     function isValidEmail() {
-        if (email.match(/.+@+./i))
+        if (email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i))
             return true;
         else
             return false;
@@ -30,23 +37,32 @@ function RegisterForm() {
     }
 
     function isPasswordStrongEnough() {
-        return true;
+        return password.length > 5;
     }
 
     const submitHandler = async (event) => {
         event.preventDefault();
+        let hasError = false;
+
         if(!isValidEmail(email)) {
-            alert('Wrong email!');
-            return;
+            setErrorMessageEmail('Incorrect email');
+            setErrorEmail(true);
+            hasError = true;
         }
         if(!isPasswordStrongEnough()) {
-            alert('Passwords is too weak');
-            return;
+            setErrorMessagePassword('Password must be longer than 5 characters');
+            setErrorPassword(true);
+            hasError = true;
         }
         if(!arePasswordTheSame()) {
-            alert('Passwords are different');
+            setErrorMessageRepeat('The passwords are not the same');
+            setErrorRepeat(true);
+            hasError = true;
+        }
+        if(hasError) {
             return;
         }
+
         try {
             const response = await axios.post("http://localhost:8080/auth/signup",
                 {
@@ -54,17 +70,21 @@ function RegisterForm() {
                     password,
                     username
                 });
+
+            localStorage.setItem('register', "Registered successfully");
             navigate("/login");
+
         }catch(error) {
-            if(error) {
-                console.error("registration failed", error);
-            }
+            setErrorMessage("registration failed try later");
         }
     }
 
     return (
       <form className={styles.registerForm} onSubmit={submitHandler}>
-          <input className={styles.textInputRegister}
+          {(errorMessage !== '') && <b className={styles.errorMessage}>{errorMessage}</b>}
+
+          {(errorMessageEmail !== '') && <b className={styles.errorMessage}>{errorMessageEmail}</b>}
+          <input className={`${styles.textInputRegister} ${errorEmail ? styles.error : ''}`}
                  type = 'text'
                  name = 'email'
                  value = {email}
@@ -72,7 +92,8 @@ function RegisterForm() {
                  placeholder='email'>
           </input>
 
-          <input className={styles.textInputRegister}
+          {(errorMessagePassword !== '') && <b className={styles.errorMessage}>{errorMessagePassword}</b>}
+          <input className={`${styles.textInputRegister} ${errorPassword ? styles.error: ''}`}
                  type = 'password'
                  name = 'password'
                  value = {password}
@@ -80,7 +101,8 @@ function RegisterForm() {
                  placeholder='password'>
           </input>
 
-          <input className={styles.textInputRegister}
+          {(errorMessageRepeat !== '') && <b className={styles.errorMessage}>{errorMessageRepeat}</b>}
+          <input className={`${styles.textInputRegister} ${errorRepeat ? styles.error: ''}`}
                  type = 'password'
                  name = 'repeatPassword'
                  value = {repeatPassword}

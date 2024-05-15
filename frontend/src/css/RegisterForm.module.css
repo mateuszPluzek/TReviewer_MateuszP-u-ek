@@ -18,6 +18,20 @@
     box-shadow: inset 2px 2px 6px #3d3d3d;
 }
 
+.textInputRegister.error {
+    border: 2px solid #fc1111;
+    box-shadow: 0 0 5px #fc1111;
+}
+
+.errorMessage {
+    color: #fc1111;
+    font-size: 17px;
+    margin: 0;
+    background-color: #4E98DD;
+    padding: 0.2em;
+    border-radius: 10px;
+}
+
 .textInputRegister::placeholder {
     color: #4f4e4e;
 }
@@ -31,7 +45,7 @@
     font-size: 18px;
     text-color: black;
 
-    margin: 1.5em;
+    margin: 0.5em;
 
     box-shadow: 2px 2px 4px #3d3d3d;
 }

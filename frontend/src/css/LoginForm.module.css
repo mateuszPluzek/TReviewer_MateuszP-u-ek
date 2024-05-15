@@ -22,6 +22,20 @@
     color: #4f4e4e;
 }
 
+.textInputLogin.error {
+    border: 2px solid #fc1111;
+    box-shadow: 0 0 5px #fc1111;
+}
+
+.errorMessage {
+    color: #fc1111;
+    font-size: 20px;
+    margin: 0;
+    background-color: #4E98DD;
+    padding: 0.2em;
+    border-radius: 10px;
+}
+
 .logInButton {
     width: 25vw;
     height: 2.5em;
