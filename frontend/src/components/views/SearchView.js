@@ -12,7 +12,6 @@ function SearchView() {
     const navigate = useNavigate();
 
     // TODO change between found station and search view
-    // TODO fix the css
     useEffect(() => {
         if(buttonPressed !== 2) {
             handleTrainButton();

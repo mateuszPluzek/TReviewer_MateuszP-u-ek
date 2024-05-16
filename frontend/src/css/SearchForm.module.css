@@ -50,3 +50,44 @@
     border-radius: 1px;
     width: 30%;
 }
+/*KEYFRAMES*/
+@keyframes hideElement {
+    0% {
+        pointer-events: none;
+        opacity: 1;
+        height: auto;
+    }
+    50% {
+        opacity: 0;
+        height: 4em;
+    }
+    100% {
+        opacity: 0;
+        height: 0;
+        visibility: hidden;
+    }
+}
+@keyframes showElement {
+    0% {
+        visibility: visible;
+        pointer-events: auto;
+        opacity: 0;
+        height: 0;
+    }
+    50% {
+        opacity: 0;
+        height: 4em;
+    }
+    100% {
+        opacity: 1;
+        height: auto;
+    }
+}
+
+.hidden {
+    animation: hideElement 1s forwards;
+}
+
+.visible {
+    animation: showElement 1s forwards;
+}
