@@ -1,40 +1,56 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import styles from '../css/SearchForm.module.css'
+import {useNavigate} from "react-router-dom";
 
 function SearchTrains() {
-    //TODO add error handling if station input is wrong or server is notn responding
 
-    const [trainStations, setTrainStations] = useState([])
+    const [trainStations, setTrainStations] = useState([]);
+    const [trainRoutes, setTrainRoutes] = useState([]);
 
     //station
-    const [station, setStation] = useState('');
+    const [station, setStation] = useState(localStorage.getItem('searchTrainStationName'));
     //start-route
-    const [startRoute, setStartRoute] = useState('');
+    const [startRoute, setStartRoute] = useState(localStorage.getItem('searchTrainRouteStartName'));
     //end-route
-    const [endRoute, setEndRoute] = useState('');
+    const [endRoute, setEndRoute] = useState(localStorage.getItem('searchTrainRouteEndName'));
 
     //configuration for showing and hiding elements based on where the user is typing
     const [showStationInput, setShowStationInput] = useState(true);
     const [showRouteInput, setShowRouteInput] = useState(true);
 
+    //not found
+    const [stationNotFound, setStationNotFound] = useState('');
+
+    const navigation = useNavigate();
+
     const handleStationChange = (e) => {
         const value = e.target.value;
         setStation(value);
         setShowRouteInput(value === '');
+        setStationNotFound('');
+    //     Remove route input
+        setStartRoute('');
+        setEndRoute('');
+
     };
 
     const handleRouteStartChange = (e) => {
         const value = e.target.value;
         setStartRoute(value);
         setShowStationInput(value === '' && endRoute === '');
-
+        setStationNotFound('');
+    //     Remove station input
+        setStation('');
     };
 
     const handleRouteEndChange = (e) => {
         const value = e.target.value;
         setEndRoute(value);
         setShowStationInput(value === '' && startRoute === '');
+        setStationNotFound('');
+        //     Remove station input
+        setStation('');
     };
 
     useEffect(() => {
@@ -66,24 +82,76 @@ function SearchTrains() {
 
     const submitHandler = async (event) => {
         event.preventDefault();
+
         if((station!==''&&startRoute!=='') || (station!==''&&endRoute!==''))
             alert("Can't search both")
 
-        let stationVar, startVar, endVar;
-
         const stationKey = trainStations.find(trainStation => trainStation.stationName.toLowerCase() === station.toLowerCase());
-        stationKey ? stationVar = stationKey.idStation : stationVar = 'Nan';
+        if(stationKey) {
+            localStorage.setItem('searchTrainStationName', stationKey.stationName);
+            localStorage.setItem('searchTrainStationId', stationKey.idStation);
+
+            localStorage.removeItem('searchTrainRouteStartName');
+            localStorage.removeItem('searchTrainRouteEndName');
+            navigation('/posts');
+        }
+        else {
+            if(!startRoute || !endRoute)
+                setStationNotFound('Station not found');
+            localStorage.setItem('searchTrainStationName', '');
+            localStorage.setItem('searchTrainStationId', 'Nan');
+        }
 
         const startKey = trainStations.find(trainStation => trainStation.stationName.toLowerCase() === startRoute.toLowerCase());
-        startKey ? startVar = startKey.idStation : startVar = 'Nan';
+        if(startKey) {
+            localStorage.setItem('searchTrainRouteStartName', startKey.stationName);
+            localStorage.setItem('searchTrainRouteStartId', startKey.idStation);
+        }
+        else {
+            if(!station)
+                setStationNotFound('Route station not found');
+            localStorage.setItem('searchTrainRouteStartName', '');
+            localStorage.setItem('searchTrainRouteStartId', 'Nan');
+        }
 
         const endKey = trainStations.find(trainStation => trainStation.stationName.toLowerCase() === endRoute.toLowerCase());
-        endKey ? endVar = endKey.idStation : endVar = 'Nan';
+        if(endKey) {
+            localStorage.setItem('searchTrainRouteEndName', endKey.stationName);
+            localStorage.setItem('searchTrainRouteEndId', endKey.idStation);
+        }
+        else {
+            if(!station)
+                setStationNotFound('Route station not found');
+            localStorage.setItem('searchTrainRouteEndName', '');
+            localStorage.setItem('searchTrainRouteEndId', 'NaN');
+        }
+        if(startKey && endKey)
+            findRoute(localStorage.getItem('token'));
+    };
 
-    }
+    const findRoute = async (token) => {
+        try {
+            const response = await axios.get("http://localhost:8080/routes",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+            const filteredStations = response.data.filter(route => route.routeType === 0);
+
+            setTrainRoutes(filteredStations);
+
+        } catch(error) {
+            console.error("error fetching data", error);
+        }
+
+    //     TODO find if the route exists and then navigate to posts and remove the localstorage stationName
+
+    };
 
     return (
         <form className={styles.searchForm} onSubmit={submitHandler} autoComplete='off'>
+            {(stationNotFound) && <b className={styles.notFound}>Station not found</b>}
             <div className={showStationInput ? styles.visible : styles.hidden}>
                 <input list='trainStations' className={styles.selectStation}
                     type='text'

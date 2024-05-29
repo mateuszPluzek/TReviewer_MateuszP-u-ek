@@ -15,6 +15,9 @@ function SearchPlanes() {
     const [showAirportInput, setShowAirportInput] = useState(true);
     const [showRouteInput, setShowRouteInput] = useState(true);
 
+    // TODO add  navigate and not found const
+
+    // TODO remove value that is not being used
     const handleAirportChange = (e) => {
         const value = e.target.value;
         setAirport(value);
@@ -67,17 +70,16 @@ function SearchPlanes() {
         if((airport!==''&&startRoute!=='') || (airport!==''&&endRoute!==''))
             alert("Can't search both")
 
-
-        let airportVar, startVar, endVar;
+        // TODO implement search
 
         const airportKey = airports.find(airportStation => airportStation.stationName.toLowerCase() === airport.toLowerCase());
-        airportKey ? airportVar = airportKey.idStation : airportVar = 'Nan';
+
 
         const startKey = airports.find(airportStation => airportStation.stationName.toLowerCase() === startRoute.toLowerCase());
-        startKey ? startVar = startKey.idStation : startVar = 'Nan';
+
 
         const endKey = airports.find(airportStation => airportStation.stationName.toLowerCase() === endRoute.toLowerCase());
-        endKey ? endVar = endKey.idStation : endVar = 'Nan';
+
 
 
     }

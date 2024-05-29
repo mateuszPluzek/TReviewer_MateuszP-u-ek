@@ -1,30 +1,31 @@
 import React, {useState} from 'react';
 
 import styles from '../../css/views/Posts.module.css';
+import PostsHeader from "../PostsHeader";
+import PostsSpace from "../PostsSpace";
 
 function Posts() {
 
 
     return (
-        <div>
-            <div>
-            {/*div for station name or route name*/}
-                <h2>Sample text</h2>
-            </div>
+        <div className={styles.PostsDiv}>
 
-            <div>
+            {/*obok Postheadera*/}
+            {/*<div>*/}
+            {/* add post*/}
+            {/* user data */}
+            {/*</div>*/}
+
+            <PostsHeader/>
+
+            {/*Wewnątrz Posts space!!!*/}
+            {/*<div>*/}
             {/*    div for buttons to switch views*/}
-                <button></button>
-                <button></button>
-            </div>
+            {/*    <button></button>*/}
+            {/*    <button></button>*/}
+            {/*</div>*/}
 
-            <div>
-            {/*    div for info and reviews*/}
-            </div>
-
-            <div>
-            {/*    div for going back to search  and logout*/}
-            </div>
+            <PostsSpace/>
 
         </div>
     );

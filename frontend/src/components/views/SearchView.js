@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
 import SearchTrains from "../SearchTrains";
 import SearchPlanes from "../SearchPlanes";
+import LogOutButton from "../LogOutButton";
 import styles from '../../css/views/SearchView.module.css';
 
 function SearchView() {
@@ -11,7 +12,6 @@ function SearchView() {
     const [planeButtonStyle, setPlaneButtonStyle] = useState(styles.selectButton);
     const navigate = useNavigate();
 
-    // TODO change between found station and search view
     useEffect(() => {
         if(buttonPressed !== 2) {
             handleTrainButton();
@@ -31,13 +31,7 @@ function SearchView() {
         setPlaneButtonStyle(styles.activeButton);
         setTrainButtonStyle(styles.selectButton);
     }
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/');
-    }
-
-
-
+    // TODO add user data button and put logout button there instead of here
     return (
       <div className={styles.searchView}>
           <div className={styles.searchFormDiv}>
@@ -51,11 +45,7 @@ function SearchView() {
                       <SearchPlanes/>
                   )
               }
-              <div className={styles.logOutDiv}>
-                  <button className={styles.logOutButton} onClick={handleLogout}>
-                      Log out
-                  </button>
-              </div>
+              <LogOutButton/>
           </div>
 
           <div className={styles.buttonDiv}>
