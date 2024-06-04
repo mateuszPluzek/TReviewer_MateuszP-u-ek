@@ -5,10 +5,26 @@ import {useNavigate} from "react-router-dom";
 
 function PostHeaders() {
 
-    // TODO CHANGE the behaviout based depending if this is a route or a station
-    // const type
+    let station;
+    if(localStorage.getItem('type') === 'train') {
+        localStorage.removeItem('buttonType');
 
-    const station = localStorage.getItem('searchTrainStationName');
+        if (localStorage.getItem('searchType') === 'station') {
+            station = localStorage.getItem('searchTrainStationName');
+        } else if (localStorage.getItem('searchType') === 'route') {
+            station = localStorage.getItem('searchTrainRouteStartName') + ' - ' + localStorage.getItem('searchTrainRouteEndName');
+        }
+    }
+    else if(localStorage.getItem('type') === 'plane') {
+        localStorage.setItem('buttonType', 'plane');
+
+        if (localStorage.getItem('searchType') === 'station') {
+            station = localStorage.getItem('searchPlaneStationName');
+        } else if (localStorage.getItem('searchType') === 'route') {
+            station = localStorage.getItem('searchPlaneRouteStartName') + ' - ' + localStorage.getItem('searchPlaneRouteEndName');
+        }
+    }
+
     const navigate = useNavigate();
 
     const handleClick = (() => {

@@ -24,9 +24,6 @@ public class RoutePost {
     @Column(name = "comment")
     private String comment;
 
-    @Column(name = "rating")
-    private Integer rating;
-
     @Column(name = "creation_date")
     private Timestamp creationDate;
 
@@ -39,7 +36,6 @@ public class RoutePost {
         this.user = user;
         this.route = route;
         this.comment = comment;
-        this.rating = rating;
         this.creationDate = creationDate;
         this.postType = postType;
     }
@@ -58,10 +54,6 @@ public class RoutePost {
 
     public String getComment() {
         return comment;
-    }
-
-    public Integer getRating() {
-        return rating;
     }
 
     public Timestamp getCreationDate() {
@@ -86,10 +78,6 @@ public class RoutePost {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
     }
 
     public void setCreationDate(Timestamp creationDate) {

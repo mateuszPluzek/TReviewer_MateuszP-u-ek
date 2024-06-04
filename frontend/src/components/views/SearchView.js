@@ -12,14 +12,20 @@ function SearchView() {
     const [planeButtonStyle, setPlaneButtonStyle] = useState(styles.selectButton);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if(buttonPressed !== 2) {
+    useEffect( () => {
+        if(localStorage.getItem('buttonType')) {
+            handlePlaneButton();
+            localStorage.removeItem('buttonType');
+        }
+        else if(buttonPressed !== 2) {
             handleTrainButton();
         }
         const token = localStorage.getItem('token');
         if(!token) {
             navigate('/login');
         }
+
+
     });
     const handleTrainButton = () => {
         setButtonPressed(1);
@@ -31,7 +37,7 @@ function SearchView() {
         setPlaneButtonStyle(styles.activeButton);
         setTrainButtonStyle(styles.selectButton);
     }
-    // TODO add user data button and put logout button there instead of here
+
     return (
       <div className={styles.searchView}>
           <div className={styles.searchFormDiv}>

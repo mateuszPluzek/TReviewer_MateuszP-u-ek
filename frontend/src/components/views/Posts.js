@@ -6,24 +6,17 @@ import PostsSpace from "../PostsSpace";
 
 function Posts() {
 
+    // check if admin
 
     return (
         <div className={styles.PostsDiv}>
 
             {/*obok Postheadera*/}
             {/*<div>*/}
-            {/* add post*/}
             {/* user data */}
             {/*</div>*/}
 
             <PostsHeader/>
-
-            {/*Wewnątrz Posts space!!!*/}
-            {/*<div>*/}
-            {/*    div for buttons to switch views*/}
-            {/*    <button></button>*/}
-            {/*    <button></button>*/}
-            {/*</div>*/}
 
             <PostsSpace/>
 

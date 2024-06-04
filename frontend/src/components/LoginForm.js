@@ -32,6 +32,14 @@ function LoginForm() {
             const token = response.data.token;
             localStorage.setItem('token', token);
         //     go to page
+            const response2 = await axios.get("http://localhost:8080/users/me",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+            localStorage.setItem('userType', response2.data.userType);
+
             navigate("/search");
 
         } catch(error) {

@@ -13,6 +13,7 @@ import styles from "./App.module.css"
 
 // routing
 import {Route, Routes} from 'react-router-dom';
+import PostInput from "./components/views/PostInput";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path = '/register' element = {<Register/>}/>
             <Route path = '/search' element = {<SearchView/>}/>
             <Route path = '/posts' element = {<Posts/>}/>
+            <Route path = '/post_input' element = {<PostInput/>}/>
           </Routes>
         </div>
       </>

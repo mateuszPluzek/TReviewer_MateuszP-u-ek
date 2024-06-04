@@ -1,27 +1,32 @@
 import React, {useEffect, useState} from 'react';
 import styles from '../css/SearchForm.module.css'
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function SearchPlanes() {
     // TODO copy the searchTrains so it work for the planes
     const [airports, setAirports] = useState([]);
     //airport
-    const [airport, setAirport] = useState('');
+    const [airport, setAirport] = useState(localStorage.getItem('searchPlaneStationName'));
     //start-route
-    const [startRoute, setStartRoute] = useState('');
+    const [startRoute, setStartRoute] = useState(localStorage.getItem('searchPlaneRouteStartName'));
     //end-route
-    const [endRoute, setEndRoute] = useState('');
+    const [endRoute, setEndRoute] = useState(localStorage.getItem('searchPlaneRouteEndName'));
 
     const [showAirportInput, setShowAirportInput] = useState(true);
     const [showRouteInput, setShowRouteInput] = useState(true);
 
-    // TODO add  navigate and not found const
+    const [stationNotFound, setStationNotFound] = useState('');
 
-    // TODO remove value that is not being used
+    const navigation = useNavigate();
+
     const handleAirportChange = (e) => {
         const value = e.target.value;
         setAirport(value);
         setShowRouteInput(value === '');
+        //     Remove route input
+        setStartRoute('');
+        setEndRoute('');
 
     };
 
@@ -29,13 +34,16 @@ function SearchPlanes() {
         const value = e.target.value;
         setStartRoute(value);
         setShowAirportInput(value === '' && endRoute === '');
-
+        //     Remove station input
+        setAirport('');
     };
 
     const handleRouteEndChange = (e) => {
         const value = e.target.value;
         setEndRoute(value);
         setShowAirportInput(value === '' && startRoute === '');
+        //     Remove station input
+        setAirport('');
     };
 
 
@@ -70,22 +78,59 @@ function SearchPlanes() {
         if((airport!==''&&startRoute!=='') || (airport!==''&&endRoute!==''))
             alert("Can't search both")
 
-        // TODO implement search
-
         const airportKey = airports.find(airportStation => airportStation.stationName.toLowerCase() === airport.toLowerCase());
 
+        if(airportKey) {
+            localStorage.setItem('searchPlaneStationName', airportKey.stationName);
+            localStorage.setItem('searchPlaneStationId', airportKey.idStation);
+
+            localStorage.removeItem('searchPlaneRouteStartName');
+            localStorage.removeItem('searchPlaneRouteEndName');
+            localStorage.setItem('type', 'plane');
+            localStorage.setItem('searchType', 'station');
+            navigation('/posts');
+        }
+        else {
+            if(!startRoute || !endRoute)
+                setStationNotFound('Airport not found');
+            localStorage.setItem('searchPlaneStationName', '');
+            localStorage.setItem('searchPlaneStationId', 'Nan');
+        }
 
         const startKey = airports.find(airportStation => airportStation.stationName.toLowerCase() === startRoute.toLowerCase());
-
+        if(startKey) {
+            localStorage.setItem('searchPlaneRouteStartName', startKey.stationName);
+            localStorage.setItem('searchPlaneRouteStartId', startKey.idStation);
+        }
+        else {
+            if(!airport)
+                setStationNotFound('Route station not found');
+            localStorage.setItem('searchPlaneRouteStartName', '');
+            localStorage.setItem('searchPlaneRouteStartId', 'Nan');
+        }
 
         const endKey = airports.find(airportStation => airportStation.stationName.toLowerCase() === endRoute.toLowerCase());
-
-
-
-    }
+        if(endKey) {
+            localStorage.setItem('searchPlaneRouteEndName', endKey.stationName);
+            localStorage.setItem('searchPlaneRouteEndId', endKey.idStation);
+        }
+        else {
+            if(!airport)
+                setStationNotFound('Route station not found');
+            localStorage.setItem('searchPlaneRouteEndName', '');
+            localStorage.setItem('searchPlaneRouteEndId', 'NaN');
+        }
+        if(startKey && endKey) {
+            localStorage.removeItem('searchPlaneStationName');
+            localStorage.setItem('type', 'plane');
+            localStorage.setItem('searchType', 'route');
+            navigation('/posts');
+        }
+    };
 
     return (
         <form className={styles.searchForm} onSubmit={submitHandler} autoComplete='off'>
+            {(stationNotFound) && <b className={styles.notFound}>Station not found</b>}
             <div className={showAirportInput ? styles.visible : styles.hidden}>
                 <input list='airports' className={styles.selectStation}
                        type='text'

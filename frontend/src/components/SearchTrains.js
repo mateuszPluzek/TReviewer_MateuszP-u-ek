@@ -93,6 +93,8 @@ function SearchTrains() {
 
             localStorage.removeItem('searchTrainRouteStartName');
             localStorage.removeItem('searchTrainRouteEndName');
+            localStorage.setItem('type', 'train');
+            localStorage.setItem('searchType', 'station');
             navigation('/posts');
         }
         else {
@@ -125,8 +127,12 @@ function SearchTrains() {
             localStorage.setItem('searchTrainRouteEndName', '');
             localStorage.setItem('searchTrainRouteEndId', 'NaN');
         }
-        if(startKey && endKey)
-            findRoute(localStorage.getItem('token'));
+        if(startKey && endKey) {
+            localStorage.removeItem('searchTrainStationName');
+            localStorage.setItem('type', 'train');
+            localStorage.setItem('searchType', 'route');
+            navigation('/posts');
+        }
     };
 
     const findRoute = async (token) => {
@@ -144,8 +150,6 @@ function SearchTrains() {
         } catch(error) {
             console.error("error fetching data", error);
         }
-
-    //     TODO find if the route exists and then navigate to posts and remove the localstorage stationName
 
     };
 
