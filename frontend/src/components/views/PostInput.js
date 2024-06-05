@@ -11,10 +11,11 @@ function PostInput() {
 
     const [comment, setComment] = useState('');
     const [tooManyError, setTooManyError] = useState(false);
+    const [emptyText, setEmptyText] = useState(true);
     const navigator = useNavigate();
     const submitHandler = async (event) => {
         event.preventDefault();
-        if(!tooManyError) {
+        if(!tooManyError || !emptyText) {
             if(searchType === 'station') {
                 const idUser = parseInt(localStorage.getItem('userId'));
                 const creationDate = new Date().toISOString();
@@ -64,25 +65,49 @@ function PostInput() {
         const value = e.target.value;
         setComment(value);
 
-        if (comment.length > 2000) {
+        if (comment.length > 1400) {
             setTooManyError(true);
         }
         else {
-        setTooManyError(false);
+            setTooManyError(false);
+        }
+
+        if(comment.length <= 1) {
+            setEmptyText(true);
+        }
+        else {
+            setEmptyText(false);
         }
     }
 
+    // TODO add list to
+
     return(
         <div>
-        {/*        info about the post */}
+
+            {   searchType === 'station' && type === 'train' &&
+                <h1 className={styles.postHeader}>{localStorage.getItem('searchTrainStationName')} - {buttonPressed}</h1>
+            }
+            {   searchType === 'station' && type === 'plane' &&
+                <h1 className={styles.postHeader}>{localStorage.getItem('searchPlaneStationName')} - {buttonPressed}</h1>
+            }
+            {   searchType === 'route' && type === 'train' &&
+                <h1 className={styles.postHeader}>{localStorage.getItem('searchTrainRouteStartName')+'-'+localStorage.getItem('searchTrainRouteEndName')} - {buttonPressed}</h1>
+            }
+            {   searchType === 'route' && type === 'plane' &&
+                <h1 className={styles.postHeader}>{localStorage.getItem('searchPlaneRouteStartName')+'-'+localStorage.getItem('searchPlaneRouteEndName')} - {buttonPressed}</h1>
+            }
+
+
+
             <form className={styles.postForm} onSubmit={submitHandler}>
-                {tooManyError && <b className={styles.errorText}>Too many characters</b>}
+                {tooManyError && <b className={styles.errorText}>Too many characters (need less than 1400)</b>}
                 <textarea className={`${styles.textInput} ${tooManyError ? styles.error: ''}`}
                     type='text'
                     name='comment'
                     value={comment}
                     onChange={handleChange}
-                    placeholder='limit 2000 znaków'>
+                    placeholder="Text can't be longer than 1400 characters, and can't be empty">
                 </textarea>
                 <button className={styles.submitButton} type='submit'>Submit</button>
             </form>

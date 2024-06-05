@@ -1,9 +1,31 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Logo from "./Logo";
 import styles from "../css/PostHeaders.module.css"
 import {useNavigate} from "react-router-dom";
 
 function PostHeaders() {
+
+
+    useEffect( () => {
+        if(localStorage.getItem('searchType') === 'route') {
+            if(localStorage.getItem('type') === 'train') {
+                localStorage.setItem('searchTrainStationName' , '');
+            }
+            else {
+                localStorage.setItem('searchPlaneStationName', '');
+            }
+        }
+        else {
+            if(localStorage.getItem('type') === 'train') {
+                localStorage.setItem('searchTrainRouteStartName', '');
+                localStorage.setItem('searchTrainRouteEndName', '');
+            }
+            else {
+                localStorage.setItem('searchPlaneRouteStartName', '');
+                localStorage.setItem('searchPlaneRouteEndName', '');
+            }
+        }
+    });
 
     let station;
     if(localStorage.getItem('type') === 'train') {

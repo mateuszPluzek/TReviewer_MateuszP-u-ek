@@ -31,19 +31,19 @@ public class OperatorController {
         return repository.findById(id).orElseThrow(()->new OperatorNotFoundException(id));
     }
     //update
-    @PutMapping("/operators/{id}")
-    Operator updateOperator(@RequestBody Operator newOperator, @PathVariable Integer id) {
-        return repository.findById(id).map(
-                operator -> {
-                    operator.setIdOperator(newOperator.getIdOperator());
-                    operator.setOperator(newOperator.getOperator());
-                    return repository.save(operator);
-                }
-        ).orElseGet(() -> {
-            newOperator.setIdOperator(id);
-            return repository.save(newOperator);
-        });
-    }
+//    @PutMapping("/operators/{id}")
+//    Operator updateOperator(@RequestBody Operator newOperator, @PathVariable Integer id) {
+//        return repository.findById(id).map(
+//                operator -> {
+//                    operator.setIdOperator(newOperator.getIdOperator());
+//                    operator.setOperator(newOperator.getOperator());
+//                    return repository.save(operator);
+//                }
+//        ).orElseGet(() -> {
+//            newOperator.setIdOperator(id);
+//            return repository.save(newOperator);
+//        });
+//    }
     //delete
     @DeleteMapping("/operators/{id}")
     void deleteOperator(@PathVariable Integer id) {

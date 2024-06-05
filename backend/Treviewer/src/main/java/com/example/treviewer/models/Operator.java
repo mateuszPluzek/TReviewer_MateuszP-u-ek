@@ -15,10 +15,14 @@ public class Operator {
     @Column(name="operator")
     private String operator;
 
+    @Column(name="type_type")
+    private Integer operatorType;
+
     public Operator() {}
 
-    public Operator(String operator) {
+    public Operator(String operator, Integer operatorType) {
         this.operator = operator;
+        this.operatorType = operatorType;
     }
 
     public Integer getIdOperator() {
@@ -37,26 +41,33 @@ public class Operator {
         this.operator = operator;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) {
-            return true;
-        }
-        if(!(o instanceof Operator)) {
-            return false;
-        }
-        Operator operator = (Operator) o;
-        return Objects.equals(this.idOperator, operator.idOperator)
-                && Objects.equals(this.operator, operator.operator);
+    public Integer getOperatorType() {
+        return operatorType;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.idOperator, this.operator);
+    public void setOperatorType(Integer operatorType) {
+        this.operatorType = operatorType;
     }
+//    @Override
+//    public boolean equals(Object o) {
+//        if(this == o) {
+//            return true;
+//        }
+//        if(!(o instanceof Operator)) {
+//            return false;
+//        }
+//        Operator operator = (Operator) o;
+//        return Objects.equals(this.idOperator, operator.idOperator)
+//                && Objects.equals(this.operator, operator.operator);
+//    }
 
-    @Override
-    public String toString() {
-        return "Id: {" + this.idOperator + "}, Operator name: {" + this.operator + "}";
-    }
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(this.idOperator, this.operator);
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "Id: {" + this.idOperator + "}, Operator name: {" + this.operator + "}";
+//    }
 }

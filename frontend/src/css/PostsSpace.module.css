@@ -8,6 +8,8 @@
 
 .buttons {
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 .posts{
@@ -62,18 +64,22 @@
     border-radius: 10px;
     padding: 0.5em;
     border: solid black 1px;
-    background-color: #b2b2b2;
+    background-color: #ffffff;
 }
 
 .editPost:hover {
-    background-color: #696969;
+    background-color: #bbbbbb;
 }
 
 .editPost:active {
-    background-color: #333333;
+    background-color: #6c6c6c;
 }
 
 /*POST FORMATING*/
+
+.hTwo {
+    text-align: center;
+}
 
 .addButton {
     position: fixed;
@@ -89,11 +95,43 @@
     background-color: #38498a;
 }
 
+
+.selectedItem {
+    border-radius: 5px;
+    padding: 0.5em;
+    margin-left: 10px;
+    background-color: #3a51d7;
+    margin-top: 5px;
+}
+
+.selectedItem:hover {
+    background-color: #728ef8;
+}
+
+.selectedItem:active {
+    background-color: #213ca8;
+}
+
+.operatorItem {
+    padding: 0.5em;
+    margin-left: 10px;
+    background-color: #728ef8;
+}
+
+.operatorItem:hover {
+    background-color: #3a51d7;
+}
+
+.operatorItem:active {
+    background-color: #213ca8;
+}
+
+
 .selectButton {
     width: 8em;
     height: 3em;
     text-align: center;
-    background-color: #858585;
+    background-color: #8097ff;
     border-radius: 0;
     border: none;
 
@@ -101,20 +139,20 @@
 }
 
 .selectButton:hover {
-    background-color: #bbbbbb;
+    background-color: #3c60ff;
 }
 
 .activeButton {
     width: 8em;
     height: 3em;
     text-align: center;
-    background-color: #595959;
+    background-color: #0056a1;
     border-radius: 0;
-    border: none;
+    border: 2px solid black;
 
     /*box-shadow: 2px 2px 4px #3d3d3d;*/
 }
 
 .activeButton:hover {
-    background-color: #8c8c8c;
+    background-color: #3b89ff;
 }
