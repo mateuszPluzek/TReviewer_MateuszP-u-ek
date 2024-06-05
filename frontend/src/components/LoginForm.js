@@ -39,6 +39,7 @@ function LoginForm() {
                     }
                 });
             localStorage.setItem('userType', response2.data.userType);
+            localStorage.setItem('userId', response2.data.idUser)
 
             navigate("/search");
 

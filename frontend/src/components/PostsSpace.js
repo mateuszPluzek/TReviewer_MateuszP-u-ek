@@ -33,14 +33,14 @@ function PostsSpace() {
                         });
                      let filteredPosts;
 
-                     if(localStorage.getItem('type') === 'train' && buttonPressed === 1)
-                         filteredPosts = response.data.filter(post => post.postType === 0 && post.station.stationType === 0);
-                    else if(localStorage.getItem('type') === 'train' && buttonPressed === 2)
-                        filteredPosts = response.data.filter(post => post.postType === 0 && post.station.stationType === 1);
-                    else if(localStorage.getItem('type') === 'plane' && buttonPressed === 1)
-                        filteredPosts = response.data.filter(post => post.postType === 1 && post.station.stationType === 0);
-                    else if(localStorage.getItem('type') === 'plane' && buttonPressed === 2)
-                        filteredPosts = response.data.filter(post => post.postType === 1 && post.station.stationType === 1);
+                    if(type === 'train' && buttonPressed === 1)
+                        filteredPosts = response.data.filter(post => post.postType === 0 && post.station.stationType === 0 && post.station.idStation === parseInt(localStorage.getItem('searchTrainStationId')));
+                    else if(type === 'train' && buttonPressed === 2)
+                        filteredPosts = response.data.filter(post => post.postType === 1 && post.station.stationType === 0 && post.station.idStation === parseInt(localStorage.getItem('searchTrainStationId')));
+                    else if(type === 'plane' && buttonPressed === 1)
+                        filteredPosts = response.data.filter(post => post.postType === 1 && post.station.stationType === 0 && post.station.idStation === parseInt(localStorage.getItem('searchPlaneStationId')));
+                    else if(type === 'plane' && buttonPressed === 2)
+                        filteredPosts = response.data.filter(post => post.postType === 1 && post.station.stationType === 1 && post.station.idStation === parseInt(localStorage.getItem('searchPlaneStationId')));
 
                     setPosts(filteredPosts);
                 } catch(error) {
@@ -48,24 +48,30 @@ function PostsSpace() {
                 }
             }
             else if(localStorage.getItem('searchType') === 'route') {
-
+            //     TODO obsługa route
             }
         };
-            // try {
-            //     const response = await axios.get("http://localhost:8080/routes/1",
-            //         {
-            //             headers: {
-            //                 Authorization: `Bearer ${token}`
-            //             }
-            //         });
-            //
-            //     res = response.data.destination.stationName;
-            // } catch(error) {
-            //     console.error("error fetching data", error);
-            // }
 
         fetchData();
     });
+
+    const handleDelete = (postId) => {
+        try {
+            const response = axios.delete("http://localhost:8080/stationPosts/"+postId,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+        }catch(error) {
+            console.error("error deleting data", error);
+        }
+    }
+
+    const handleEdit = (postId) => {
+        alert(postId);
+    }
 
     const handleReview = () => {
         setButtonPressed(1);
@@ -78,8 +84,19 @@ function PostsSpace() {
         setInfoButtonStyle(styles.activeButton);
     };
     const handleAdd = () => {
+        if(buttonPressed === 1)
+            localStorage.setItem('buttonPressed', 'review');
+        else
+            localStorage.setItem('buttonPressed', 'info');
         navigation("/post_input")
     };
+
+    const determineId = (post) => {
+        if(localStorage.getItem('searchType') === 'station')
+            return post.idStationPost;
+        else
+            return post.idRoutePost;
+    }
 
     return (
         <div className={styles.postsSpace}>
@@ -89,11 +106,16 @@ function PostsSpace() {
             </div>
             <div className={styles.posts}>
                 {posts.map(post => (
-                    <div key={post.idStationPost} className={styles.post}>
-                        <div className={styles.postHeader}>
+                    <div className={styles.post}>
+                        <div className={styles.postHeader} key={determineId(post)}>
                             <span className={styles.headerText}>{post.user.username}</span>
                             <span className={styles.headerText}>{post.creationDate.split('T')[0]}</span>
-                            {/*remove button*/}
+                            {localStorage.getItem('searchType') === 'route' &&
+                                <span className={styles.headerText}>Operator: post.operator.operator</span>}
+                            {post.user.idUser === parseInt(localStorage.getItem('userId')) &&
+                                <button className={styles.editPost} onClick={()=>handleEdit(post.idStationPost)}>Edit</button>}
+                            {(post.user.idUser === parseInt(localStorage.getItem('userId')) || (userType === "admin")) &&
+                                <button className={styles.adminDelete} onClick={()=>handleDelete(post.idStationPost)}>Delete</button>}
                         </div>
                         <div className={styles.postContent}>
                             {post.comment}

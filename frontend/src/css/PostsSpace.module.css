@@ -42,13 +42,44 @@
     padding: 0.5em;
     border-radius: 10px;
 }
+
+.adminDelete {
+    border-radius: 10px;
+    padding: 0.5em;
+    border: solid black 1px;
+    background-color: #ee0e0e;
+}
+
+.adminDelete:hover {
+    background-color: #b00000;
+}
+
+.adminDelete:active {
+    background-color: #480000;
+}
+
+.editPost {
+    border-radius: 10px;
+    padding: 0.5em;
+    border: solid black 1px;
+    background-color: #b2b2b2;
+}
+
+.editPost:hover {
+    background-color: #696969;
+}
+
+.editPost:active {
+    background-color: #333333;
+}
+
 /*POST FORMATING*/
 
 .addButton {
     position: fixed;
-    right: 2.5em;
-    bottom: 2.5em;
-    padding: 0.5em 0.75em;
+    right: 3em;
+    bottom: 3em;
+    padding: 1.5em 1.75em;
     border-radius: 100%;
     border: solid black 1px;
     background-color: #728ef8;
