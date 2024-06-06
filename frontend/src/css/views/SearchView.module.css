@@ -1,6 +1,7 @@
 .searchView {
     /*width: 100vw;*/
     /*height: 35%;*/
+    text-align: center;
 }
 
 .searchFormDiv {
@@ -50,4 +51,80 @@
 .logoImage {
     height: 6em;
     width: 6em;
+}
+
+.fixedButton {
+    border: 1px solid black;
+    padding: 0.5em 0.8em;
+    border-radius: 100px;
+    font-size: 1em;
+    color: white;
+    margin-bottom: 0.5em;
+    margin-top: 0;
+
+    background-color: #1041d3;
+}
+
+.fixedButton:hover {
+    background-color: #4a77ef;
+}
+
+.fixedButton:active {
+    background-color: #032caf;
+}
+
+
+/*OVERLAY*/
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+    padding-right: 2em;
+}
+
+.closeButton {
+    background-color: #1c47be;
+    border: none;
+    padding: 0.6em 1em;
+    border-radius: 20px;
+    font-size: 1em;
+}
+
+.closeButton:hover {
+    background-color: #032caf;
+}
+
+.favouriteStation {
+    list-style-type: none;
+    margin: 0.5em;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #1391e7;
+    padding: 0.5em;
+}
+
+.favouriteStation:hover {
+    background-color: #007ed3;
+}
+
+/*OVERLAY*/
+
+
+@media only screen and (max-height: 560px) {
+    .searchView {
+        display: flex;
+        display-direction: rows;
+    }
+    .searchFormDiv {
+        height: 100vh;
+    }
 }

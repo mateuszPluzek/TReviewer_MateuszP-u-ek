@@ -11,11 +11,6 @@ function Posts() {
     return (
         <div className={styles.PostsDiv}>
 
-            {/*obok Postheadera*/}
-            {/*<div>*/}
-            {/* user data */}
-            {/*</div>*/}
-
             <PostsHeader/>
 
             <PostsSpace/>

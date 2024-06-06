@@ -1,5 +1,6 @@
 package com.example.treviewer.controllers;
 
+import com.example.treviewer.dtos.UserDto;
 import com.example.treviewer.models.User;
 import com.example.treviewer.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -21,18 +22,19 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<User> authenticatedUser() {
+    public ResponseEntity<UserDto> authenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
 
-        return ResponseEntity.ok(currentUser);
-    }
+        UserDto userDTO = new UserDto(currentUser);
 
-//    @GetMapping("/")
-//    public ResponseEntity<List<User>> allUsers() {
-//        List<User> users = userService.allUsers();
-//
-//        return ResponseEntity.ok(users);
-//    }
+        return ResponseEntity.ok(userDTO);
+    }
+    @GetMapping("/")
+    public ResponseEntity<List<User>> allUsers() {
+        List<User> users = userService.allUsers();
+
+        return ResponseEntity.ok(users);
+    }
 
 }

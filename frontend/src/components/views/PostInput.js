@@ -16,21 +16,22 @@ function PostInput() {
     const submitHandler = async (event) => {
         event.preventDefault();
         if(!tooManyError || !emptyText) {
+            //Data for post or review
+            let postType;
+            const idUser = parseInt(localStorage.getItem('userId'));
+            const creationDate = new Date().toISOString();
+            if(buttonPressed === 'review')
+                postType = 0;
+            else if(buttonPressed === 'info')
+                postType = 1;
+
             if(searchType === 'station') {
-                const idUser = parseInt(localStorage.getItem('userId'));
-                const creationDate = new Date().toISOString();
-                let idStation, postType;
+                let idStation;
 
                 if(type === 'train')
                     idStation = parseInt(localStorage.getItem('searchTrainStationId'));
                 else
                     idStation = parseInt(localStorage.getItem('searchPlaneStationId'));
-
-                if(buttonPressed === 'review')
-                    postType = 0;
-                else if(buttonPressed === 'info')
-                    postType = 1;
-
 
                 try {
                     const response = await axios.post("http://localhost:8080/stationPosts",
@@ -56,7 +57,31 @@ function PostInput() {
                 }
             }
             else {
-            //     TODO Route
+                const idRoute = parseInt(localStorage.getItem('routeId'));
+
+                try {
+                    const response = await axios.post("http://localhost:8080/routePosts",
+                        {
+                            "user": {
+                                idUser
+                            },
+                            "route": {
+                                idRoute
+                            },
+                            "comment": comment,
+                            "creationDate": creationDate,
+                            "postType": postType
+                        },
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        });
+                    console.log(idRoute);
+                    navigator('/posts');
+                }catch(error) {
+                    console.log("post failed!");
+                }
             }
         }
     };
@@ -80,8 +105,6 @@ function PostInput() {
         }
     }
 
-    // TODO add list to
-
     return(
         <div>
 
@@ -92,10 +115,10 @@ function PostInput() {
                 <h1 className={styles.postHeader}>{localStorage.getItem('searchPlaneStationName')} - {buttonPressed}</h1>
             }
             {   searchType === 'route' && type === 'train' &&
-                <h1 className={styles.postHeader}>{localStorage.getItem('searchTrainRouteStartName')+'-'+localStorage.getItem('searchTrainRouteEndName')} - {buttonPressed}</h1>
+                <h1 className={styles.postHeader}>{localStorage.getItem('searchTrainRouteStartName')+'-'+localStorage.getItem('searchTrainRouteEndName')} - {buttonPressed} - {localStorage.getItem('selectedOperatorName')}</h1>
             }
             {   searchType === 'route' && type === 'plane' &&
-                <h1 className={styles.postHeader}>{localStorage.getItem('searchPlaneRouteStartName')+'-'+localStorage.getItem('searchPlaneRouteEndName')} - {buttonPressed}</h1>
+                <h1 className={styles.postHeader}>{localStorage.getItem('searchPlaneRouteStartName')+'-'+localStorage.getItem('searchPlaneRouteEndName')} - {buttonPressed} - {localStorage.getItem('selectedOperatorName')}</h1>
             }
 
 

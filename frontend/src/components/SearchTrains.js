@@ -55,6 +55,7 @@ function SearchTrains() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+
         fetchData(token);
     });
 

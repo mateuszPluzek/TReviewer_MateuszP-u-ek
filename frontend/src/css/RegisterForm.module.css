@@ -57,3 +57,15 @@
 .registerButton:hover {
     background-color: #d0cfcf;
 }
+
+@media only screen and (max-width: 795px) {
+    .textInputRegister {
+        width: 90%;
+        /*margin-bottom: 2em;*/
+    }
+    .registerButton {
+        width: 10em;
+        padding: 0.5em;
+        font-size: 1em;
+    }
+}

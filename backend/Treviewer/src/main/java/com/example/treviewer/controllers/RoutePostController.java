@@ -31,6 +31,19 @@ public class RoutePostController {
         return repository.findById(id).orElseThrow(()->new RoutePostNotFoundException(id));
     }
     //update
+    @PutMapping("/routePosts/{id}")
+    RoutePost updateRoutePost(@RequestBody RoutePost newRoutePost, @PathVariable Integer id) {
+        return repository.findById(id)
+                .map(routePost -> {
+//                    routePost.setUser(newRoutePost.getUser());
+//                    routePost.setRoute(newRoutePost.getRoute());
+                    routePost.setComment(newRoutePost.getComment());
+//                    routePost.setCreationDate(newRoutePost.getCreationDate());
+//                    routePost.setPostType(newRoutePost.getPostType());
+                    return repository.save(routePost);
+                })
+                .orElseThrow(() -> new RoutePostNotFoundException(id));
+    }
     //delete
     @DeleteMapping("/routePosts/{id}")
     void deleteRoutePost(@PathVariable Integer id) {

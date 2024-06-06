@@ -23,3 +23,10 @@
 .logOutDiv {
     text-align: center;
 }
+
+@media only screen and (max-width: 615px) {
+    .logOutButton {
+        font-size: 1em;
+        width: 6em;
+    }
+}

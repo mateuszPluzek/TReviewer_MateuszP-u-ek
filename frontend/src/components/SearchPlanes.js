@@ -4,7 +4,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
 function SearchPlanes() {
-    // TODO copy the searchTrains so it work for the planes
+
     const [airports, setAirports] = useState([]);
     //airport
     const [airport, setAirport] = useState(localStorage.getItem('searchPlaneStationName'));

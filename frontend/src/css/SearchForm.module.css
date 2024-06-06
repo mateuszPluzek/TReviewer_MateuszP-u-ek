@@ -96,3 +96,15 @@
 .visible {
     animation: showElement 1s forwards;
 }
+
+@media only screen and (max-width: 615px) {
+    .selectStation {
+        width: 18em;
+    }
+    .breakLine {
+        width: 40%;
+    }
+    .searchButton {
+        font-size: 1em;
+    }
+}

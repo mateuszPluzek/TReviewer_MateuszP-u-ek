@@ -52,3 +52,16 @@
 .submitButton:hover {
     background-color: #d0cfcf;
 }
+
+@media only screen and (max-width: 530px) {
+    .submitButton {
+        /*padding: 0.5em;*/
+        font-size: 1em;
+        width: 8em;
+    }
+}
+@media only screen and (max-height: 545px) {
+    .textInput {
+        height: 10em;
+    }
+}

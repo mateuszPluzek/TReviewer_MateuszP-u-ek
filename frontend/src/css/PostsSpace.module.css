@@ -156,3 +156,25 @@
 .activeButton:hover {
     background-color: #3b89ff;
 }
+
+@media only screen and (max-width: 580px) {
+    .headerText {
+        font-size: 0.8em;
+    }
+    .adminDelete {
+        font-size: 0.8em;
+    }
+    .editPost {
+        font-size: 0.8em;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    .postsSpace {
+        height: 100%;
+    }
+    .posts{
+        max-height: 350px;
+    }
+}
+

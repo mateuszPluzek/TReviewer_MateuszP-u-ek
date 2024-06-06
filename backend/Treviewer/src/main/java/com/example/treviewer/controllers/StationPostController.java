@@ -31,6 +31,19 @@ public class StationPostController {
         return repository.findById(id).orElseThrow(()->new StationPostNotFoundException(id));
     }
     //update
+    @PutMapping("/stationPosts/{id}")
+    StationPost updateStationPost(@RequestBody StationPost newStationPost, @PathVariable Integer id) {
+        return repository.findById(id)
+                .map(stationPost -> {
+//                    stationPost.setUser(newStationPost.getUser());
+//                    stationPost.setStation(newStationPost.getStation());
+                    stationPost.setComment(newStationPost.getComment());
+//                    stationPost.setCreationDate(newStationPost.getCreationDate());
+//                    stationPost.setPostType(newStationPost.getPostType());
+                    return repository.save(stationPost);
+                })
+                .orElseThrow(() -> new StationPostNotFoundException(id));
+    }
     //delete
     @DeleteMapping("/stationPosts/{id}")
     void deleteStationPost(@PathVariable Integer id) {

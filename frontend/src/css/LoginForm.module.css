@@ -57,3 +57,14 @@
 .logInButton:hover {
     background-color: #d0cfcf;
 }
+
+@media only screen and (max-width: 795px) {
+    .textInputLogin {
+        width: 90%;
+    }
+    .logInButton {
+        /*padding: 0.5em;*/
+        font-size: 1em;
+    }
+}
+

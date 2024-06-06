@@ -24,112 +24,107 @@ function PostsSpace() {
 
     //error if route doesnt exist
     const [routeDoesNotExist, setRouteDoesNotExist] = useState(false);
-    const [operatorDoesNotExist, setOperatorDoesNotExist] = useState(false);
 
     const navigation = useNavigate();
 
     useEffect( () => {
-    if(buttonPressed !== 2) {
+        if(buttonPressed !== 2) {
             handleReview();
         }
-        const fetchData = async () => {
-
-            if(localStorage.getItem('searchType') === 'station') {
-                try {
-                     const response = await axios.get("http://localhost:8080/stationPosts",
-                        {
-                             headers: {
-                                Authorization: `Bearer ${token}`
-                            }
-                        });
-                     let filteredPosts;
-
-                    if(type === 'train' && buttonPressed === 1)
-                        filteredPosts = response.data.filter(post => post.postType === 0 && post.station.idStation === parseInt(localStorage.getItem('searchTrainStationId'))).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
-                    else if(type === 'train' && buttonPressed === 2)
-                        filteredPosts = response.data.filter(post => post.postType === 1 && post.station.idStation === parseInt(localStorage.getItem('searchTrainStationId')) && new Date(post.creationDate) >= fortyEightHoursAgo).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
-                    else if(type === 'plane' && buttonPressed === 1)
-                        filteredPosts = response.data.filter(post => post.postType === 0 && post.station.idStation === parseInt(localStorage.getItem('searchPlaneStationId'))).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
-                    else if(type === 'plane' && buttonPressed === 2)
-                        filteredPosts = response.data.filter(post => post.postType === 1 && post.station.idStation === parseInt(localStorage.getItem('searchPlaneStationId')) && new Date(post.creationDate) >= fortyEightHoursAgo).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
-
-                    setPosts(filteredPosts);
-                } catch(error) {
-                    console.error("error fetching data", error);
-                }
-            }
-            else if(localStorage.getItem('searchType') === 'route') {
-                try {
-                    const responseOperators = await axios.get("http://localhost:8080/operators",
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                            }
-                        });
-                    if(type === 'train')
-                        setOperatorData(responseOperators.data.filter(operator => operator.operatorType === 0));
-                    else
-                        setOperatorData(responseOperators.data.filter(operator => operator.operatorType === 1));
-                    if(!selectedOperator)
-                        setSelectedOperator(operatorData[0].operator);
-                }catch(error) {
-                    console.error("error fetching data", error);
-                }
-
-                try {
-                    const responseRoutes = await axios.get("http://localhost:8080/routes",
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                            }
-                        });
-                    let route;
-                    if(type === 'train')
-                        route = responseRoutes.data.filter(post => post.station.idStation === parseInt(localStorage.getItem('searchTrainRouteStartId')) && post.destination.idStation === parseInt(localStorage.getItem('searchTrainRouteEndId')));
-                    else
-                        route = responseRoutes.data.filter(post => post.station.idStation === parseInt(localStorage.getItem('searchPlaneRouteStartId')) && post.destination.idStation === parseInt(localStorage.getItem('searchPlaneRouteEndId')));
-
-                    const testOperatorRoute = responseRoutes.data.filter(route => route.operator.operator === selectedOperator);
-                    if(testOperatorRoute == '')
-                        setOperatorDoesNotExist(true);
-                    else
-                        setOperatorDoesNotExist(false);
-
-                    if(route != '') {
-                        setRouteDoesNotExist(false);
-
-                        try {
-                            const response = await axios.get("http://localhost:8080/routePosts",
-                                {
-                                    headers: {
-                                        Authorization: `Bearer ${token}`
-                                    }
-                                });
-                            let filteredPosts;
-
-                            if(buttonPressed === 1)
-                                filteredPosts = response.data.filter(post => post.route.operator.operator === selectedOperator && post.postType === 0 && route[0].idRoute === post.route.idRoute).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
-                            else if(buttonPressed === 2)
-                                filteredPosts = response.data.filter(post => post.route.operator.operator === selectedOperator && post.postType === 1 && route[0].idRoute === post.route.idRoute && new Date(post.creationDate) >= fortyEightHoursAgo).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
-
-                            setPosts(filteredPosts);
-                        }catch(error) {
-                            console.error("error fetching data", error);
-                        }
-                    }
-                    else {
-                        setRouteDoesNotExist(true);
-                    }
-
-
-                }catch(error) {
-                    console.error("error fetching data", error);
-                }
-            }
-        };
-
         fetchData();
     });
+    const fetchData = async () => {
+
+        if(localStorage.getItem('searchType') === 'station') {
+            try {
+                const response = await axios.get("http://localhost:8080/stationPosts",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                let filteredPosts;
+
+                if(type === 'train' && buttonPressed === 1)
+                    filteredPosts = response.data.filter(post => post.postType === 0 && post.station.idStation === parseInt(localStorage.getItem('searchTrainStationId'))).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
+                else if(type === 'train' && buttonPressed === 2)
+                    filteredPosts = response.data.filter(post => post.postType === 1 && post.station.idStation === parseInt(localStorage.getItem('searchTrainStationId')) && new Date(post.creationDate) >= fortyEightHoursAgo).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
+                else if(type === 'plane' && buttonPressed === 1)
+                    filteredPosts = response.data.filter(post => post.postType === 0 && post.station.idStation === parseInt(localStorage.getItem('searchPlaneStationId'))).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
+                else if(type === 'plane' && buttonPressed === 2)
+                    filteredPosts = response.data.filter(post => post.postType === 1 && post.station.idStation === parseInt(localStorage.getItem('searchPlaneStationId')) && new Date(post.creationDate) >= fortyEightHoursAgo).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
+
+                setPosts(filteredPosts);
+            } catch(error) {
+                console.error("error fetching data", error);
+            }
+        }
+        else if(localStorage.getItem('searchType') === 'route') {
+            try {
+                const responseOperators = await axios.get("http://localhost:8080/operators",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                if(type === 'train')
+                    setOperatorData(responseOperators.data.filter(operator => operator.operatorType === 0));
+                else
+                    setOperatorData(responseOperators.data.filter(operator => operator.operatorType === 1));
+                if(!selectedOperator)
+                    setSelectedOperator(operatorData[0].operator);
+            }catch(error) {
+                console.error("error fetching data", error);
+            }
+
+            try {
+                const responseRoutes = await axios.get("http://localhost:8080/routes",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                let route;
+                if(type === 'train')
+                    route = responseRoutes.data.filter(post => post.operator.operator === selectedOperator && post.station.idStation === parseInt(localStorage.getItem('searchTrainRouteStartId')) && post.destination.idStation === parseInt(localStorage.getItem('searchTrainRouteEndId')));
+                else
+                    route = responseRoutes.data.filter(post => post.operator.operator === selectedOperator && post.station.idStation === parseInt(localStorage.getItem('searchPlaneRouteStartId')) && post.destination.idStation === parseInt(localStorage.getItem('searchPlaneRouteEndId')));
+
+                if(route != '') {
+                    setRouteDoesNotExist(false);
+
+                    try {
+                        const response = await axios.get("http://localhost:8080/routePosts",
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`
+                                }
+                            });
+                        let filteredPosts;
+
+                        localStorage.setItem('routeId', route[0].idRoute);
+
+                        if(buttonPressed === 1)
+                            filteredPosts = response.data.filter(post => post.postType === 0 && route[0].idRoute === post.route.idRoute).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
+                        else if(buttonPressed === 2)
+                            filteredPosts = response.data.filter(post => post.postType === 1 && route[0].idRoute === post.route.idRoute && new Date(post.creationDate) >= fortyEightHoursAgo).sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
+
+                        setPosts(filteredPosts);
+                    }catch(error) {
+                        console.error("error fetching data", error);
+                    }
+                }
+                else {
+                    setRouteDoesNotExist(true);
+                }
+
+
+            }catch(error) {
+                console.error("error fetching data", error);
+            }
+        }
+    };
+
 
     const handleDelete = (postId) => {
         if(localStorage.getItem('searchType') === 'station') {
@@ -161,7 +156,8 @@ function PostsSpace() {
     };
 
     const handleEdit = (postId) => {
-        alert(postId);
+        localStorage.setItem('postEditId', postId);
+        navigation('/post_edit');
     };
 
     const handleReview = () => {
@@ -175,7 +171,7 @@ function PostsSpace() {
         setInfoButtonStyle(styles.activeButton);
     };
     const handleAdd = () => {
-        if(!routeDoesNotExist && !operatorDoesNotExist) {
+        if(!routeDoesNotExist) {
             if (buttonPressed === 1)
                 localStorage.setItem('buttonPressed', 'review');
             else
@@ -199,8 +195,8 @@ function PostsSpace() {
     };
 
     const handleOperatorSelect = (item) => {
-        setSelectedOperator(item.operator);
-        localStorage.setItem('selectedOperator', item.idOperator);
+        setSelectedOperator(item);
+        localStorage.setItem('selectedOperatorName', item);
         setIsDropdown(false);
     }
     const toggleDropdown = () => {
@@ -212,7 +208,7 @@ function PostsSpace() {
             <div className={styles.buttons}>
                 <button className={reviewButtonStyle} onClick={handleReview}>Review</button>
                 <button className={infoButtonStyle} onClick={handleInfo}>Info</button>
-                { localStorage.getItem('searchType') === 'route' && !routeDoesNotExist &&
+                { localStorage.getItem('searchType') === 'route' &&
                     <div>
                         <div className={styles.selectedItem} onClick={toggleDropdown}>
                             {selectedOperator || "no operator"}
@@ -220,7 +216,7 @@ function PostsSpace() {
                         {isDropdown && (
                             <div>
                                 {operatorData.map(op => (
-                                  <div key={op.idOperator} onClick={() => handleOperatorSelect(op)} className={styles.operatorItem}>
+                                  <div key={op.idOperator} onClick={() => handleOperatorSelect(op.operator)} className={styles.operatorItem}>
                                       {op.operator}
                                   </div>
                                 ))}
@@ -230,10 +226,10 @@ function PostsSpace() {
                 }
             </div>
             <div className={styles.posts}>
-                {   (routeDoesNotExist || operatorDoesNotExist) &&
+                {   routeDoesNotExist &&
                     <h2 className={styles.hTwo}>That route doesn't exist</h2>
                 }
-                {posts.map(post => (
+                { !routeDoesNotExist && posts.map(post => (
                     <div className={styles.post}>
                         <div className={styles.postHeader} key={determineId(post)}>
                             <span className={styles.headerText}>{post.user.username}</span>

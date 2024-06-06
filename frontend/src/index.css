@@ -36,3 +36,8 @@ html, body {
   padding: 0;
 }
 
+@media only screen and (max-height: 540px) {
+  .html, body{
+    overflow: scroll;
+  }
+}
